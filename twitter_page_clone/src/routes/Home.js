@@ -1,42 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { dbService } from "../myBase";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { authService, dbService } from "../myBase";
+import Tweet from "../component/Tweet";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  onSnapshot,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
-const Home = () => {
-  const [tweet, SetTweet] = useState("");
+const Home = ({ userObj }) => {
+  console.log(userObj.uid);
+  const [tweet, setTweet] = useState("");
   const [tweets, setTweets] = useState([]);
-  const getTweets = async () => {
-    const querySnapshot = await getDocs(collection(dbService, "tweets"));
-    querySnapshot.forEach((doc) => {
-      const TweetObject = {
-        ...doc.data(),
-        id: doc.id,
-      };
-      setTweets((prev) => [TweetObject, ...prev]);
-    });
-  };
   useEffect(() => {
-    getTweets();
+    const q = query(
+      collection(dbService, "tweets"),
+      orderBy("createdAt", "desc")
+    );
+    onSnapshot(q, (snapshot) => {
+      const TweetArr = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(TweetArr);
+      setTweets(TweetArr);
+    });
   }, []);
   const onSubmit = async (event) => {
-    event.preventDefault();
     try {
       const docRef = await addDoc(collection(dbService, "tweets"), {
-        tweet,
+        text: tweet,
         createdAt: Date.now(),
+        creatorId: userObj.uid,
       });
     } catch (error) {
       console.log(error.message);
     }
-    SetTweet("");
+    setTweet("");
   };
   const onChange = (event) => {
     const {
       target: { value },
     } = event;
-    SetTweet(value);
+    setTweet(value);
   };
-  console.log(tweets);
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -51,9 +60,11 @@ const Home = () => {
       </form>
       <div>
         {tweets.map((tweet) => (
-          <div key={tweet.id}>
-            <h4>{tweet.tweet}</h4>
-          </div>
+          <Tweet
+            key={tweet.id}
+            tweetObj={tweet}
+            isOwner={tweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </div>
