@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { getStorage, ref, deleteObject } from "firebase/storage";
 import { dbService } from "../myBase";
 
 const Tweet = ({ tweetObj, isOwner }) => {
@@ -10,6 +11,9 @@ const Tweet = ({ tweetObj, isOwner }) => {
     console.log(ok);
     if (ok) {
       await deleteDoc(doc(dbService, "tweets", `${tweetObj.id}`));
+      if (tweetObj.fileUrl) {
+        await deleteObject(ref(getStorage(), tweetObj.fileUrl));
+      }
     }
   };
   const toggleEditing = () => {
@@ -40,14 +44,17 @@ const Tweet = ({ tweetObj, isOwner }) => {
               required
               onChange={onChange}
             />
+            <input type="file" accept="image/*" />
             <input type="submit" value="Update Tweet" />
           </form>
           <button onClick={toggleEditing}>Cancel</button>
         </>
       ) : (
         <>
+          {tweetObj.fileUrl && (
+            <img src={tweetObj.fileUrl} width="100px" height="100px" />
+          )}
           <h3>{tweetObj.text} </h3>
-
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Tweet</button>
