@@ -11,6 +11,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Home = ({ userObj }) => {
   const [tweet, setTweet] = useState("");
@@ -22,12 +23,17 @@ const Home = ({ userObj }) => {
       collection(dbService, "tweets"),
       orderBy("createdAt", "desc")
     );
-    onSnapshot(q, (snapshot) => {
-      const TweetArr = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const TweetArr = snapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
       setTweets(TweetArr);
+    });
+
+    onAuthStateChanged(authService, (user) => {
+      if (user != null) {
+        unsubscribe();
+      }
     });
   }, []);
   const onSubmit = async (event) => {
