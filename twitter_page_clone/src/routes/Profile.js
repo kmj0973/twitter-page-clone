@@ -5,11 +5,10 @@ import { collection, where, getDocs, query, orderBy } from "firebase/firestore";
 
 export default ({ refreshUser, userObj }) => {
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
-
   const onLogOutClick = () => {
     try {
       signOut(authService);
-      console.log("3");
+      refreshUser();
     } catch (error) {
       console.log(error.message);
     }
@@ -56,7 +55,7 @@ export default ({ refreshUser, userObj }) => {
         <input type="submit" placeholder="Update Profile" />
       </form>
       <button onClick={onLogOutClick} name="Logout">
-        Logout
+        logout
       </button>
     </>
   );

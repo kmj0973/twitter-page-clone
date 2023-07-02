@@ -23,18 +23,18 @@ const Home = ({ userObj }) => {
       collection(dbService, "tweets"),
       orderBy("createdAt", "desc")
     );
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    onSnapshot(q, (snapshot) => {
       const TweetArr = snapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
       });
       setTweets(TweetArr);
     });
 
-    onAuthStateChanged(authService, (user) => {
-      if (user != null) {
-        unsubscribe();
-      }
-    });
+    // onAuthStateChanged(authService, (user) => {
+    //   if (user != null) {
+    //     unsubscribe();
+    //   }
+    // });
   }, []);
   const onSubmit = async (event) => {
     event.preventDefault();
