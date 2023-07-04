@@ -4,6 +4,7 @@ import Auth from "../routes/Auth";
 import Home from "../routes/Home";
 import Profile from "../routes/Profile";
 import Navigation from "./Navigation";
+import SetAuth from "../routes/SetAuth";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
@@ -24,6 +25,9 @@ const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
           <>
             <Route exact path="/">
               <Auth />
+            </Route>
+            <Route exact path="/setAuth">
+              <SetAuth refreshUser={refreshUser} />
             </Route>
             <Redirect from="*" to="/" />
           </>

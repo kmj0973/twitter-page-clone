@@ -8,6 +8,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { authService } from "../myBase";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -23,23 +24,37 @@ const Auth = () => {
     }
     console.log(event.target.name);
   };
-  const onSubmit = async (event) => {
+  const onLogIn = async (event) => {
     event.preventDefault();
     try {
       let data;
       const auth = getAuth();
-      if (newAccount) {
-        data = await createUserWithEmailAndPassword(auth, email, password);
-      } else {
-        data = await signInWithEmailAndPassword(auth, email, password);
-      }
+      // if (newAccount) {
+      //   data = await createUserWithEmailAndPassword(auth, email, password);
+      // } else {
+      data = await signInWithEmailAndPassword(auth, email, password);
       console.log(data);
       console.log(authService.currentUser);
     } catch (error) {
       setError(error.message.replace("Firebase:", ""));
     }
   };
-  const toggleAccount = () => setNewAccount((prev) => !prev);
+  const onCreateAccount = async (event) => {
+    event.preventDefault();
+    try {
+      let data;
+      const auth = getAuth();
+      // if (newAccount) {
+      //   data = await createUserWithEmailAndPassword(auth, email, password);
+      // } else {
+      data = await signInWithEmailAndPassword(auth, email, password);
+      console.log(data);
+      console.log(authService.currentUser);
+    } catch (error) {
+      setError(error.message.replace("Firebase:", ""));
+    }
+  };
+  // const toggleAccount = () => setNewAccount((prev) => !prev);
   const onSocialClick = async (event) => {
     console.log(event.target.name);
     let provider;
@@ -56,30 +71,34 @@ const Auth = () => {
     }
   };
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input
-          name="email"
-          type="text"
-          placeholder="Email"
-          required
-          value={email}
-          onChange={onChange}
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          required
-          vlaue={password}
-          onChange={onChange}
-        />
-        <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
+    <div className="login-form">
+      트위터
+      <form className="login-form__input" onSubmit={onLogIn}>
+        <div className="login-form__input_text">
+          <input
+            name="email"
+            type="text"
+            placeholder="Email"
+            required
+            value={email}
+            onChange={onChange}
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+            value={password}
+            onChange={onChange}
+          />
+          <input
+            type="submit"
+            // value={newAccount ? "Create Account" : "Log In"}
+            value="Log In"
+          />
+        </div>
       </form>
-      <span onClick={toggleAccount}>
-        {newAccount ? "Sign In" : "Create Account"}
-      </span>
-      <div>
+      <div className="other-auth">
         <button onClick={onSocialClick} name="google">
           Continue with Google
         </button>
@@ -87,6 +106,9 @@ const Auth = () => {
           Continue with Github
         </button>
       </div>
+      <Link to="/setAuth">
+        <input type="submit" value="Create Account" />
+      </Link>
       {error}
     </div>
   );
