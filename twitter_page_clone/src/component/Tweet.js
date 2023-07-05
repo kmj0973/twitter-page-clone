@@ -36,29 +36,33 @@ const Tweet = ({ tweetObj, isOwner }) => {
         <div>
             {editing ? (
                 <>
-                    <form onSubmit={onSubmit}>
-                        <input
-                            type="text"
-                            placeholder="Edit your Tweet"
-                            value={newTweet}
-                            required
-                            onChange={onChange}
-                        />
-                        <input type="file" accept="image/*" />
-                        <input type="submit" value="Update Tweet" />
-                    </form>
-                    <button onClick={toggleEditing}>Cancel</button>
+                    <div className="tweet">
+                        <form onSubmit={onSubmit}>
+                            <input
+                                type="text"
+                                placeholder="Edit your Tweet"
+                                value={newTweet}
+                                required
+                                onChange={onChange}
+                            />
+                            <input type="file" accept="image/*" />
+                            <input type="submit" value="Update Tweet" />
+                        </form>
+                        <button onClick={toggleEditing}>Cancel</button>
+                    </div>
                 </>
             ) : (
                 <>
-                    {tweetObj.fileUrl && <img src={tweetObj.fileUrl} width="100px" height="100px" />}
-                    <h3>{tweetObj.text} </h3>
-                    {isOwner && (
-                        <>
-                            <button onClick={onDeleteClick}>Delete Tweet</button>
-                            <button onClick={toggleEditing}>Edit Tweet</button>
-                        </>
-                    )}
+                    <div className="tweet">
+                        {tweetObj.fileUrl && <img src={tweetObj.fileUrl} width="100px" height="100px" />}
+                        <h3>{tweetObj.text} </h3>
+                        {isOwner && (
+                            <>
+                                <button onClick={onDeleteClick}>Delete Tweet</button>
+                                <button onClick={toggleEditing}>Edit Tweet</button>
+                            </>
+                        )}
+                    </div>
                 </>
             )}
         </div>

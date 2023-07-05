@@ -1,49 +1,65 @@
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: rgb(29, 28, 28);
-  color: rgb(255, 255, 255);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgb(29, 28, 28);
+    color: rgb(255, 255, 255);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .login-form {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .login-form__input {
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
 }
 .login-form__input_text {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .auth-form {
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .auth-form__input {
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
 }
 .auth-form__button {
-  display: flex;
-  width: 100%;
-  justify-content: space-evenly;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
 }
 .auth-form__button button {
-  width: 70px;
+    width: 70px;
+}
+.tweet-form {
+    height: 400px;
+    overflow-y: scroll;
+}
+.tweet {
+    background-color: rgb(118, 130, 255);
+    border: solid 2px;
+    border-color: white;
+    border-radius: 7px;
+    margin: 10px;
 }
