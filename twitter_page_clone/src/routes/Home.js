@@ -73,8 +73,8 @@ const Home = ({ userObj }) => {
         setFileAttach('');
     };
     return (
-        <div>
-            <form onSubmit={onSubmit}>
+        <div className="main-home">
+            <form onSubmit={onSubmit} className="tweet-form__input">
                 <input
                     value={tweet}
                     onChange={onChange}
