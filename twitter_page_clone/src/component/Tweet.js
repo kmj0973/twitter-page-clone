@@ -3,7 +3,7 @@ import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
 import { dbService } from '../myBase';
 
-const Tweet = ({ tweetObj, isOwner }) => {
+const Tweet = ({ userObj, tweetObj, isOwner }) => {
     const [editing, setEditing] = useState(false);
     const [newTweet, setNewTweet] = useState(tweetObj.text);
     const onDeleteClick = async (event) => {
@@ -32,6 +32,7 @@ const Tweet = ({ tweetObj, isOwner }) => {
         } = event;
         setNewTweet(value);
     };
+    console.log(tweetObj);
     return (
         <div>
             {editing ? (
@@ -54,8 +55,10 @@ const Tweet = ({ tweetObj, isOwner }) => {
             ) : (
                 <>
                     <div className="tweet">
-                        {tweetObj.fileUrl && <img src={tweetObj.fileUrl} width="100px" height="100px" />}
+                        <div>{userObj.displayName}</div>
                         <h3>{tweetObj.text} </h3>
+                        {tweetObj.fileUrl && <img src={tweetObj.fileUrl} />}
+
                         {isOwner && (
                             <>
                                 <button onClick={onDeleteClick}>Delete Tweet</button>
