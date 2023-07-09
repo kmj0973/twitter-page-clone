@@ -55,7 +55,7 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
             ) : (
                 <>
                     <div className="tweet">
-                        <div>{userObj.displayName}</div>
+                        <div>{tweetObj.displayName}</div>
                         <h3>{tweetObj.text} </h3>
                         {tweetObj.fileUrl && <img src={tweetObj.fileUrl} />}
 

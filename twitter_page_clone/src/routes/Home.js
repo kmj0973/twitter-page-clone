@@ -19,7 +19,7 @@ const Home = ({ userObj }) => {
             });
             setTweets(TweetArr);
         });
-
+        console.log(userObj);
         // onAuthStateChanged(authService, (user) => {
         //   if (user != null) {
         //     unsubscribe();
@@ -39,6 +39,7 @@ const Home = ({ userObj }) => {
             text: tweet,
             createdAt: Date.now(),
             creatorId: userObj.uid,
+            displayName: userObj.displayName,
             fileUrl,
         };
         await addDoc(collection(dbService, 'tweets'), tweetObj);
