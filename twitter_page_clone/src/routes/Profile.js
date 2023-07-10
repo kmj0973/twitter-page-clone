@@ -5,6 +5,7 @@ import { collection, where, getDocs, query, orderBy, doc, updateDoc } from 'fire
 
 export default ({ refreshUser, userObj }) => {
     const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
+    const [cid, setCid] = useState(false);
     const onLogOutClick = () => {
         try {
             signOut(authService);
@@ -23,10 +24,6 @@ export default ({ refreshUser, userObj }) => {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, ' => ', doc.data());
-            console.log(doc.data().displayName);
-            console.log(userObj);
-            userObj.displayName = newDisplayName;
-            doc.data().displayName = newDisplayName;
         });
     };
     const onSubmit = async (event) => {
@@ -37,8 +34,17 @@ export default ({ refreshUser, userObj }) => {
             });
             refreshUser();
         }
-        await updateDoc(doc(dbService, 'tweets', `${userObj.uid}`), {
-            displayName: newDisplayName,
+        const q = query(collection(dbService, 'tweets'));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (docs) => {
+            if (docs.data().displayName == newDisplayName)
+                // doc.data() is never undefined for query doc snapshots
+                console.log(docs.id, ' => ', docs.data());
+            if (userObj.uid == docs.data().creatorId) {
+                await updateDoc(doc(dbService, 'tweets', `${docs.id}`), {
+                    displayName: newDisplayName,
+                });
+            }
         });
     };
     const onChange = (event) => {

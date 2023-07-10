@@ -4,7 +4,6 @@ import twitter_icon from '../img/twitter-icon.png';
 import user_icon from '../img/user-icon.png';
 import menu_icon from '../img/menu-icon.png';
 const Navigation = ({ userObj }) => {
-    console.log(userObj);
     return (
         <nav className="navigation">
             <ul>
