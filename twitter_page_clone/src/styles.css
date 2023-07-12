@@ -149,6 +149,7 @@ body {
     overflow-y: scroll;
     height: 100%;
     flex-grow: 2;
+    border-radius: 10px;
 }
 .tweet-form::-webkit-scrollbar {
     width: 10px;
@@ -157,6 +158,9 @@ body {
     height: 30%;
     background: #03a9f4;
     border-radius: 10px;
+}
+.tweet-form::-webkit-scrollbar-thumb:active {
+    background: #0b94d3;
 }
 .tweet-form::-webkit-scrollbar-track {
 }
@@ -181,4 +185,50 @@ body {
     object-fit: contain;
     border: solid 1px;
     border-radius: 10px;
+}
+.dialog-demo .p-button {
+    margin: 0 0.5rem 0 0;
+    min-width: 10rem;
+}
+.dialog-demo .p-dialog .p-button {
+    min-width: 6rem;
+}
+.card {
+    margin: 10px;
+    margin-right: 20px;
+}
+.p-button:enabled:active,
+.p-button:enabled:hover,
+.p-button:not(button):not(a):not(.p-disabled):hover {
+    background: #0b94d3;
+    border-color: #0b94d3;
+    color: white;
+}
+.p-button:focus {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #c7d2fe, 0 1px 2px 0 rgb(0, 0, 0);
+}
+.p-button {
+    background: #03a9f4;
+    width: 100%;
+    border: 1px solid #03a9f4;
+}
+.p-button.p-button-text {
+    color: #03a9f4;
+}
+.p-button.p-button-text:enabled:focus {
+    color: #0b94d3;
+}
+.p-button.p-button-text:enabled:hover {
+    color: #0b94d3;
+}
+.p-dialog .p-dialog-header {
+    color: #03a9f4;
+}
+.p-inputtext:enabled:hover {
+    border-color: #03a9f4;
+}
+.p-inputtext:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    border-color: #03a9f4;
 }

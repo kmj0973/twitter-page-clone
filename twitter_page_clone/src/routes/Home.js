@@ -3,6 +3,7 @@ import { authService, dbService, storageService } from '../myBase';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 import Tweet from '../component/Tweet';
+import DialogDemo from '../component/DialogDemo';
 import { collection, addDoc, getDocs, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -92,6 +93,7 @@ const Home = ({ userObj }) => {
                 )}
                 <input type="submit" value="Tweet" />
             </form>
+            <DialogDemo />
             <div className="tweet-form">
                 {tweets.map((tweet) => (
                     <Tweet

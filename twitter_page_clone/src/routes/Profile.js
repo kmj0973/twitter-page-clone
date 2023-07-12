@@ -8,8 +8,11 @@ export default ({ refreshUser, userObj }) => {
     const [cid, setCid] = useState(false);
     const onLogOutClick = () => {
         try {
-            signOut(authService);
-            refreshUser();
+            const ok = window.confirm('Are you sure?');
+            if (ok) {
+                signOut(authService);
+                refreshUser();
+            }
         } catch (error) {
             console.log(error.message);
         }

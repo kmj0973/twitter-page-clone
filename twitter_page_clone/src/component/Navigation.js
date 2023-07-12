@@ -3,12 +3,16 @@ import { Link } from 'react-router-dom';
 import twitter_icon from '../img/twitter-icon.png';
 import user_icon from '../img/user-icon.png';
 import menu_icon from '../img/menu-icon.png';
+import DialogDemo from './DialogDemo';
 const Navigation = ({ userObj }) => {
+    const onClick = () => {};
     return (
         <nav className="navigation">
             <ul>
                 <li>
-                    <img src={menu_icon} alt="menu" width="30px" />
+                    <button type="click">
+                        <img src={menu_icon} alt="menu" width="30px" />
+                    </button>
                 </li>
                 <li>
                     <Link to="/">
