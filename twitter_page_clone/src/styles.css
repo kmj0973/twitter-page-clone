@@ -1,243 +1,263 @@
 body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: rgb(29, 28, 28);
-    color: rgb(255, 255, 255);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: rgb(29, 28, 28);
+  color: rgb(255, 255, 255);
 }
 #root {
-    width: 60vw;
-    height: 100vh;
-    margin: auto;
-    justify-content: center;
-    align-items: center;
+  width: 60vw;
+  height: 100vh;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
 }
 .error-msg {
-    color: red;
+  color: red;
 }
 .login-form {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .login-form__logo img {
-    width: 40px;
-    transition: all 0.5s;
+  width: 40px;
+  transition: all 0.5s;
 }
 .login-form__logo :hover {
-    transform: scale(1.5);
+  transform: scale(1.5);
 }
 .login-form__input {
-    height: 100px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
 }
 .login-form__input_text {
-    display: flex;
-    width: 100%;
-    flex-grow: 1;
-    flex-direction: column;
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+  flex-direction: column;
 }
 .login-form__input_text input {
-    background-color: white;
-    height: 18px;
-    border: solid 1px;
-    border-radius: 5px;
-    transition: all 0.1s;
+  background-color: white;
+  height: 18px;
+  border: solid 1px;
+  border-radius: 5px;
+  transition: all 0.1s;
 }
 .login-form__input_text :active {
-    transform: scale(0.9);
+  transform: scale(0.9);
 }
 .login-form__input_text__button input {
-    background-color: #03a9f4;
-    border: solid 2px #03a9f4;
-    transition: all 0.1s;
-    border-radius: 5px;
-    flex-grow: 1;
-    color: white;
-    width: 100%;
-    height: 42px;
+  background-color: #03a9f4;
+  border: solid 2px #03a9f4;
+  transition: all 0.1s;
+  border-radius: 5px;
+  flex-grow: 1;
+  color: white;
+  width: 100%;
+  height: 42px;
 }
 .login-form__input_text__button :active {
-    transform: scale(0.9);
+  transform: scale(0.9);
+  border: solid 2px white;
 }
 .other-auth {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 230.06px;
-    height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 230.06px;
+  height: 80px;
 }
 .other-auth button {
-    width: 100%;
-    height: 25px;
-    background-color: transparent;
-    border: solid 2px #03a9f4;
-    border-radius: 20px;
-    justify-content: center;
+  width: 100%;
+  height: 25px;
+  background-color: transparent;
+  border: solid 2px #03a9f4;
+  border-radius: 20px;
+  justify-content: center;
 }
 .other-auth button img {
-    width: 15px;
-    position: relative;
-    top: 1.5px;
+  width: 15px;
+  position: relative;
+  top: 1.5px;
 }
 .other-auth :hover {
-    border-color: #fffb00;
+  border-color: #fffb00;
 }
 .create-account {
-    display: inline-block;
-    width: 100%;
-    height: 25px;
-    background-color: transparent;
-    border-radius: 20px;
+  display: inline-block;
+  width: 100%;
+  height: 25px;
+  background-color: transparent;
+  border-radius: 20px;
 }
 .create-account input {
-    width: 100%;
-    height: 25px;
-    position: relative;
-    bottom: 1px;
-    background-color: transparent;
-    border: solid 2px #03a9f4;
-    border-radius: 20px;
-    color: white;
+  width: 100%;
+  height: 25px;
+  position: relative;
+  bottom: 1px;
+  background-color: transparent;
+  border: solid 2px #03a9f4;
+  border-radius: 20px;
+  color: white;
 }
 .auth-form {
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .auth-form__input {
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 .auth-form__button {
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
 }
 .auth-form__button button {
-    width: 70px;
+  width: 70px;
 }
 .navigation {
-    margin: 0;
+  margin: 0;
 }
 .navigation ul {
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    margin: 0;
-    padding: 10px 20px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 10px 20px;
 }
 
 .main-home {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 90vh;
 }
 .tweet-form {
-    overflow-y: scroll;
-    height: 100%;
-    flex-grow: 2;
-    border-radius: 10px;
+  overflow-y: scroll;
+  height: 100%;
+  flex-grow: 2;
+  border-radius: 10px;
 }
 .tweet-form::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 .tweet-form::-webkit-scrollbar-thumb {
-    height: 30%;
-    background: #03a9f4;
-    border-radius: 10px;
+  height: 30%;
+  background: #03a9f4;
+  border-radius: 10px;
 }
 .tweet-form::-webkit-scrollbar-thumb:active {
-    background: #0b94d3;
+  background: #0b94d3;
 }
 .tweet-form::-webkit-scrollbar-track {
 }
 .tweet-form__input {
-    flex-grow: 1;
-    margin: 10px;
+  flex-grow: 1;
+  margin: 10px;
 }
 .tweet {
-    background-color: rgb(255, 255, 255);
-    color: black;
-    font-size: 15px;
-    border: solid 2px;
-    border-color: white;
-    border-radius: 7px;
-    margin: 10px;
+  background-color: rgb(255, 255, 255);
+  position: relative;
+  color: black;
+  font-size: 15px;
+  border: solid 2px;
+  border-color: white;
+  border-radius: 7px;
+  margin: 10px;
 }
 .tweet img {
-    position: relative;
-    right: 1px;
-    width: 100%;
-    height: 450px;
-    object-fit: contain;
-    border: solid 1px;
-    border-radius: 10px;
+  position: relative;
+  width: 100%;
+  height: 450px;
+  object-fit: contain;
+  border: solid 1px;
+  border-radius: 10px;
 }
 
 .dialog-demo .p-button {
-    margin: 0 0.5rem 0 0;
-    min-width: 10rem;
+  margin: 0 0.5rem 0 0;
+  min-width: 10rem;
 }
 .dialog-demo .p-dialog .p-button {
-    min-width: 6rem;
+  min-width: 6rem;
 }
 .card {
-    margin: 10px;
-    margin-right: 20px;
+  margin: 10px;
+  margin-right: 20px;
 }
 .p-button:enabled:active,
 .p-button:enabled:hover,
 .p-button:not(button):not(a):not(.p-disabled):hover {
-    background: #0b94d3;
-    border-color: #0b94d3;
-    color: white;
+  background: #0b94d3;
+  border-color: #0b94d3;
+  color: white;
 }
 .p-button:focus {
-    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #c7d2fe, 0 1px 2px 0 rgb(0, 0, 0);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #c7d2fe, 0 1px 2px 0 rgb(0, 0, 0);
 }
 .p-button {
-    background: #03a9f4;
-    width: 100%;
-    border: 1px solid #03a9f4;
+  background: #03a9f4;
+  width: 100%;
+  border: 1px solid #03a9f4;
 }
 .p-button.p-button-text {
-    color: #03a9f4;
+  color: #03a9f4;
 }
 .p-button.p-button-text:enabled:focus {
-    color: #0b94d3;
+  color: #0b94d3;
 }
 .p-button.p-button-text:enabled:hover {
-    color: #0b94d3;
+  color: #0b94d3;
 }
 .p-dialog .p-dialog-header {
-    color: #03a9f4;
+  color: #03a9f4;
 }
 .p-inputtext {
-    width: 100%;
+  width: 100%;
 }
 .p-inputtext:enabled:hover {
-    border-color: #03a9f4;
+  border-color: #03a9f4;
 }
 .p-inputtext:enabled:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    border-color: #03a9f4;
+  outline: 0 none;
+  outline-offset: 0;
+  border-color: #03a9f4;
 }
 .img-styles {
-    border: 1px solid #03a9f4;
-    border-radius: 10px;
-    margin-top: 5px;
+  border: 1px solid #03a9f4;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+.info-style {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+}
+.p-speeddial {
+  width: auto;
+  position: absolute;
+  right: 5px;
+}
+.p-speeddial-button.p-button.p-button-icon-only {
+  width: 2rem;
+  height: 2rem;
+}
+.p-speeddial-action {
+  width: 2rem;
+  height: 2rem;
 }
