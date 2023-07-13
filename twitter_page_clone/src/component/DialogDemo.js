@@ -1,28 +1,34 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FileUpload } from 'primereact/fileupload';
+import { dbService, storageService } from '../myBase';
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { addDoc, collection } from 'firebase/firestore';
 
-const DialogDemo = () => {
+const DialogDemo = ({ userObj }) => {
     const [display, setDisplay] = useState(false);
     const [position, setPosition] = useState('center');
-    const [content, setContent] = useState('');
-    const onClick = (position) => {
+    const [tweet, setTweet] = useState('');
+    const [fileAttach, setFileAttach] = useState('');
+    const fileInput = useRef();
+    const onClick = () => {
         setDisplay(true);
 
         if (position) {
             setPosition(position);
         }
-        setContent('');
+        setTweet('');
     };
 
     const onHide = () => {
         setDisplay(false);
-        setContent('');
+        setTweet('');
     };
 
     const renderFooter = () => {
@@ -33,7 +39,52 @@ const DialogDemo = () => {
             </div>
         );
     };
-
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        let fileUrl = '';
+        if (tweet === '') return window.confirm('Write your mind');
+        if (fileAttach != '') {
+            const fileRef = ref(storageService, `${userObj.uid}/${uuidv4()}`);
+            const response = await uploadString(fileRef, fileAttach, 'data_url');
+            fileUrl = await getDownloadURL(response.ref);
+        }
+        const tweetObj = {
+            text: tweet,
+            createdAt: Date.now(),
+            creatorId: userObj.uid,
+            displayName: userObj.displayName,
+            fileUrl,
+        };
+        await addDoc(collection(dbService, 'tweets'), tweetObj);
+        setTweet('');
+        setFileAttach('');
+        fileInput.current.value = null;
+    };
+    const onSelect = (event) => {
+        console.log(event.files);
+        const { files: files } = event;
+        const theFile = files[0];
+        const reader = new FileReader();
+        reader.onloadend = (finishedEvent) => {
+            const {
+                currentTarget: { result },
+            } = finishedEvent;
+            setFileAttach(result);
+        };
+        if (theFile) {
+            reader.readAsDataURL(theFile);
+        }
+    };
+    const onClear = (event) => {
+        fileInput.current.value = null;
+        setFileAttach('');
+    };
+    const onChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setTweet(value);
+    };
     return (
         <div className="dialog-demo">
             <div className="card">
@@ -45,13 +96,22 @@ const DialogDemo = () => {
                     footer={renderFooter()}
                     onHide={() => onHide()}
                 >
-                    <InputTextarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="Write a content"
-                        rows={5}
+                    <InputTextarea value={tweet} onChange={onChange} placeholder="Write a content" rows={5} />
+                    <FileUpload
+                        onSelect={onSelect}
+                        onUpload={onClear}
+                        ref={fileInput}
+                        name="demo[]"
+                        url="./upload"
+                        multiple
+                        accept="image/*"
+                        mode="basic"
                     />
-                    <FileUpload name="demo[]" url="./upload" multiple accept="image/*" mode="basic" />
+                    {fileAttach && (
+                        <div>
+                            <img className="img-styles" src={fileAttach} width="200px" height="200px" />
+                        </div>
+                    )}
                 </Dialog>
             </div>
         </div>

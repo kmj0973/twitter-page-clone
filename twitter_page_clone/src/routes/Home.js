@@ -55,6 +55,7 @@ const Home = ({ userObj }) => {
         setTweet(value);
     };
     const onFileChange = (event) => {
+        console.log(event);
         const {
             target: { files },
         } = event;
