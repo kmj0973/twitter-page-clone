@@ -186,6 +186,7 @@ body {
     border: solid 1px;
     border-radius: 10px;
 }
+
 .dialog-demo .p-button {
     margin: 0 0.5rem 0 0;
     min-width: 10rem;
@@ -223,6 +224,9 @@ body {
 }
 .p-dialog .p-dialog-header {
     color: #03a9f4;
+}
+.p-inputtext {
+    width: 100%;
 }
 .p-inputtext:enabled:hover {
     border-color: #03a9f4;
