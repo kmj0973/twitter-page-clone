@@ -216,12 +216,14 @@ body {
 }
 .p-button.p-button-text {
   color: #03a9f4;
+  border: solid 1px #03a9f4;
 }
 .p-button.p-button-text:enabled:focus {
   color: #0b94d3;
 }
 .p-button.p-button-text:enabled:hover {
   color: #0b94d3;
+  border: solid 1px #03a9f4;
 }
 .p-dialog .p-dialog-header {
   color: #03a9f4;
@@ -260,4 +262,9 @@ body {
 .p-speeddial-action {
   width: 2rem;
   height: 2rem;
+}
+.edit-btn {
+  display: flex;
+  padding: 4px 0px;
+  justify-content: space-between;
 }
