@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   getAuth,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
@@ -15,7 +14,6 @@ import github_icon from "../img/github-icon.png";
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newAccount, setNewAccount] = useState(true);
   const [error, setError] = useState("");
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -41,21 +39,7 @@ const Auth = () => {
       setError(error.message.replace("Firebase:", ""));
     }
   };
-  const onCreateAccount = async (event) => {
-    event.preventDefault();
-    try {
-      let data;
-      const auth = getAuth();
-      // if (newAccount) {
-      //   data = await createUserWithEmailAndPassword(auth, email, password);
-      // } else {
-      data = await signInWithEmailAndPassword(auth, email, password);
-      console.log(data);
-      console.log(authService.currentUser);
-    } catch (error) {
-      setError(error.message.replace("Firebase:", ""));
-    }
-  };
+
   // const toggleAccount = () => setNewAccount((prev) => !prev);
   const onSocialClick = async (event) => {
     console.log(event.target.name);

@@ -9,6 +9,7 @@ body {
   width: 60vw;
   height: 100vh;
   margin: auto;
+  padding: 10px 0px;
   justify-content: center;
   align-items: center;
 }
