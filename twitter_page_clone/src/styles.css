@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: rgb(29, 28, 28);
+  background-color: rgb(24, 23, 23);
   color: rgb(255, 255, 255);
 }
 #root {
@@ -12,6 +12,10 @@ body {
   padding: 10px 0px;
   justify-content: center;
   align-items: center;
+}
+.whole-main {
+  background-color: #000000;
+  border-radius: 15px;
 }
 .error-msg {
   color: red;
@@ -132,21 +136,29 @@ body {
 }
 .navigation {
   margin: 0;
+  border-bottom: solid 1px white;
 }
 .navigation ul {
   list-style: none;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 0;
   padding: 10px 20px;
 }
-
+.navigation ul li {
+  transition: all 0.3s;
+}
+.navigation ul li:hover {
+  transform: scale(1.2);
+}
 .main-home {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   height: 90vh;
-  margin-left: 10px;
+  padding-left: 10px;
+  margin: 10px 0px;
 }
 .tweet-form {
   overflow-y: scroll;
@@ -196,12 +208,19 @@ body {
 }
 .profile-form {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  margin: 10px;
+  padding: 10px 0px;
+}
+.profile-file {
+  position: absolute;
+  top: 5px;
+}
+.logout-btn {
   margin: 10px;
 }
-
 .dialog-demo .p-button {
   margin: 0 0.5rem 0 0;
   min-width: 10rem;
@@ -221,6 +240,10 @@ body {
   color: white;
 }
 .p-button:focus {
+  /* box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #c7d2fe, 0 1px 2px 0 rgb(0, 0, 0); */
+  box-shadow: 0 0 0 0;
+}
+.p-button:hover {
   box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #c7d2fe, 0 1px 2px 0 rgb(0, 0, 0);
 }
 .p-button {
@@ -247,6 +270,7 @@ body {
 }
 .p-inputtext {
   width: 100%;
+  transition: all 0.1s;
 }
 .p-inputtext:enabled:hover {
   border-color: #03a9f4;
@@ -255,6 +279,10 @@ body {
   outline: 0 none;
   outline-offset: 0;
   border-color: #03a9f4;
+  box-shadow: 0 0 0 0 #03a9f4;
+}
+.p-inputtext:enabled:active {
+  transform: scale(0.95);
 }
 .img-div {
   display: flex;

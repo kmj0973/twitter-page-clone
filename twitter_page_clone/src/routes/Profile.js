@@ -1,12 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { authService, dbService } from "../myBase";
 import { signOut, updateProfile } from "firebase/auth";
-import { collection, where, getDocs, query, orderBy, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  where,
+  getDocs,
+  query,
+  orderBy,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { InputText } from "primereact/inputtext";
 import profile_user_icon from "../img/profile-user-icon.png";
+import { Button } from "primereact/button";
 
 export default ({ refreshUser, userObj }) => {
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
-  const [cid, setCid] = useState(false);
+  const [profile, setProfile] = useState(profile_user_icon);
+  let fileInput = useRef();
+  const btnClick = (e) => {
+    fileInput.current.click();
+  };
   const onLogOutClick = () => {
     try {
       const ok = window.confirm("Are you sure?");
@@ -32,24 +46,42 @@ export default ({ refreshUser, userObj }) => {
   };
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (userObj.displayName !== newDisplayName) {
-      await updateProfile(userObj, {
-        displayName: newDisplayName,
-      });
-      refreshUser();
-    }
-    const q = query(collection(dbService, "tweets"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (docs) => {
-      if (docs.data().displayName == newDisplayName)
-        // doc.data() is never undefined for query doc snapshots
-        console.log(docs.id, " => ", docs.data());
-      if (userObj.uid == docs.data().creatorId) {
-        await updateDoc(doc(dbService, "tweets", `${docs.id}`), {
+    const ok = window.confirm("Do you want to change username?");
+    if (ok) {
+      if (userObj.displayName !== newDisplayName) {
+        await updateProfile(userObj, {
           displayName: newDisplayName,
         });
+        refreshUser();
       }
-    });
+      const q = query(collection(dbService, "tweets"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (docs) => {
+        if (docs.data().displayName === newDisplayName)
+          // doc.data() is never undefined for query doc snapshots
+          console.log(docs.id, " => ", docs.data());
+        if (userObj.uid === docs.data().creatorId) {
+          await updateDoc(doc(dbService, "tweets", `${docs.id}`), {
+            displayName: newDisplayName,
+          });
+        }
+      });
+    }
+  };
+  const onSelect = (event) => {
+    console.log(event.target.files);
+    const { target: files } = event;
+    const theFile = files[0];
+    const reader = new FileReader();
+    reader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setProfile(result);
+    };
+    if (theFile) {
+      reader.readAsDataURL(theFile);
+    }
   };
   const onChange = (event) => {
     const {
@@ -63,18 +95,40 @@ export default ({ refreshUser, userObj }) => {
   return (
     <div className="profile-form">
       <div>
-        <img src={profile_user_icon} alt="user" width="100vw" />
-        <label for="input-file"> file</label>
-        <input type="file" id="input-file" style={{ display: "none" }} />
+        <img src={profile} alt="user" width="100vw" />
+        <label className="profile-file" for="input-file" onClick={btnClick}>
+          file
+        </label>
+        <input
+          type="file"
+          id="input-file"
+          accept="image/*"
+          style={{ display: "none" }}
+          ref={fileInput}
+          onChange={onSelect}
+        />
       </div>
 
       <form onSubmit={onSubmit}>
-        <input onChange={onChange} value={newDisplayName} type="text" placeholder="Display Name" />
-        <input type="submit" placeholder="Update Profile" />
+        <label htmlFor="username">Username</label>
+        <div>
+          <InputText
+            id="username"
+            onChange={onChange}
+            value={newDisplayName}
+            placeholder="Display Name"
+            style={{ width: "200px" }}
+          />
+          <Button type="submit" icon="pi pi-check" />
+          {/* <input type="submit" placeholder="Update Profile" /> */}
+        </div>
       </form>
-      <button onClick={onLogOutClick} name="Logout">
+      {/* <button onClick={onLogOutClick} name="Logout">
         logout
-      </button>
+      </button> */}
+      <div className="logout-btn">
+        <Button onClick={onLogOutClick} label="logout" size="small" />
+      </div>
     </div>
   );
 };

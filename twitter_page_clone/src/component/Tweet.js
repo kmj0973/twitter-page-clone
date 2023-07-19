@@ -1,5 +1,11 @@
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
-import { getStorage, ref, deleteObject, uploadString, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  deleteObject,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
 import { SpeedDial } from "primereact/speeddial";
 import React, { useRef, useState } from "react";
 import { Button } from "primereact/button";
@@ -14,7 +20,7 @@ import "primeicons/primeicons.css";
 const Tweet = ({ tweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
   const [newTweet, setNewTweet] = useState(tweetObj.text);
-  const [fileAttach, setFileAttach] = useState("");
+  const [fileAttach, setFileAttach] = useState(tweetObj.fileUrl);
   const fileInput = useRef();
 
   const onSelect = (event) => {
@@ -67,7 +73,9 @@ const Tweet = ({ tweetObj, isOwner }) => {
       label: "Delete",
       icon: "pi pi-trash",
       command: async (event) => {
-        const ok = window.confirm("Are you sure you want to delete this tweet?");
+        const ok = window.confirm(
+          "Are you sure you want to delete this tweet?"
+        );
         console.log(ok);
         if (ok) {
           await deleteDoc(doc(dbService, "tweets", `${tweetObj.id}`));
@@ -109,9 +117,14 @@ const Tweet = ({ tweetObj, isOwner }) => {
                 mode="basic"
                 chooseLabel="Photo"
               />
-              {tweetObj.fileUrl && (
+              {fileAttach && (
                 <div className="img-div">
-                  <img className="img-styles" src={tweetObj.fileUrl} width="100px" height="100px" />
+                  <img
+                    className="img-styles"
+                    src={fileAttach}
+                    width="100px"
+                    height="100px"
+                  />
                 </div>
               )}
               <div className="edit-btn">
