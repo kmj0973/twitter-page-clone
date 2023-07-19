@@ -1,11 +1,5 @@
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
-import {
-  getStorage,
-  ref,
-  deleteObject,
-  uploadString,
-  getDownloadURL,
-} from "firebase/storage";
+import { getStorage, ref, deleteObject, uploadString, getDownloadURL } from "firebase/storage";
 import { SpeedDial } from "primereact/speeddial";
 import React, { useRef, useState } from "react";
 import { Button } from "primereact/button";
@@ -42,6 +36,7 @@ const Tweet = ({ tweetObj, isOwner }) => {
   };
   const toggleEditing = () => {
     setEditing((prev) => !prev);
+    console.log(tweetObj);
   };
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -50,7 +45,7 @@ const Tweet = ({ tweetObj, isOwner }) => {
       if (tweetObj.fileUrl) {
         await deleteObject(ref(getStorage(), tweetObj.fileUrl));
       }
-      const fileRef = ref(storageService, `${tweetObj.id}/${uuidv4()}`);
+      const fileRef = ref(storageService, `${tweetObj.creatorId}/${uuidv4()}`);
       const response = await uploadString(fileRef, fileAttach, "data_url");
       fileUrl = await getDownloadURL(response.ref);
 
@@ -72,9 +67,7 @@ const Tweet = ({ tweetObj, isOwner }) => {
       label: "Delete",
       icon: "pi pi-trash",
       command: async (event) => {
-        const ok = window.confirm(
-          "Are you sure you want to delete this tweet?"
-        );
+        const ok = window.confirm("Are you sure you want to delete this tweet?");
         console.log(ok);
         if (ok) {
           await deleteDoc(doc(dbService, "tweets", `${tweetObj.id}`));
@@ -103,7 +96,7 @@ const Tweet = ({ tweetObj, isOwner }) => {
                 value={newTweet}
                 visible="true"
                 onChange={onChange}
-                placeholder="Write a content"
+                placeholder="Write your mind!!"
                 rows={5}
               />
               <FileUpload
@@ -114,15 +107,11 @@ const Tweet = ({ tweetObj, isOwner }) => {
                 multiple
                 accept="image/*"
                 mode="basic"
+                chooseLabel="Photo"
               />
-              {fileAttach && (
-                <div>
-                  <img
-                    className="img-styles"
-                    src={fileAttach}
-                    width="200px"
-                    height="200px"
-                  />
+              {tweetObj.fileUrl && (
+                <div className="img-div">
+                  <img className="img-styles" src={tweetObj.fileUrl} width="100px" height="100px" />
                 </div>
               )}
               <div className="edit-btn">
@@ -160,7 +149,12 @@ const Tweet = ({ tweetObj, isOwner }) => {
               )}
             </div>
             <h3>{tweetObj.text} </h3>
-            {tweetObj.fileUrl && <img src={tweetObj.fileUrl} />}
+
+            {tweetObj.fileUrl && (
+              <div className="tweet_img">
+                <img src={tweetObj.fileUrl} />
+              </div>
+            )}
           </div>
         </>
       )}

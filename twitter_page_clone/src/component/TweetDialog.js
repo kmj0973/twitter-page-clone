@@ -11,7 +11,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { addDoc, collection } from "firebase/firestore";
 
-const DialogDemo = ({ userObj }) => {
+const TweetDialog = ({ userObj }) => {
   const [display, setDisplay] = useState(false);
   const [position, setPosition] = useState("center");
   const [tweet, setTweet] = useState("");
@@ -28,6 +28,7 @@ const DialogDemo = ({ userObj }) => {
 
   const onHide = () => {
     setDisplay(false);
+    setFileAttach("");
     setTweet("");
   };
   const onSubmit = async (event) => {
@@ -81,19 +82,8 @@ const DialogDemo = ({ userObj }) => {
   const renderFooter = () => {
     return (
       <div>
-        <Button
-          type="submit"
-          label="Post"
-          icon="pi pi-check"
-          autoFocus
-          onClick={onSubmit}
-        />
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          onClick={() => onHide()}
-          className="p-button-text"
-        />
+        <Button type="submit" label="Post" icon="pi pi-check" autoFocus onClick={onSubmit} />
+        <Button label="Cancel" icon="pi pi-times" onClick={() => onHide()} className="p-button-text" />
       </div>
     );
   };
@@ -110,13 +100,7 @@ const DialogDemo = ({ userObj }) => {
             footer={renderFooter()}
             onHide={() => onHide()}
           >
-            <InputTextarea
-              autoResize
-              value={tweet}
-              onChange={onChange}
-              placeholder="Write a content"
-              rows={5}
-            />
+            <InputTextarea autoResize value={tweet} onChange={onChange} placeholder="Write your mind!!" rows={5} />
             <FileUpload
               onSelect={onSelect}
               onUpload={onClear}
@@ -126,15 +110,11 @@ const DialogDemo = ({ userObj }) => {
               multiple
               accept="image/*"
               mode="basic"
+              chooseLabel="Photo"
             />
             {fileAttach && (
               <div>
-                <img
-                  className="img-styles"
-                  src={fileAttach}
-                  width="200px"
-                  height="200px"
-                />
+                <img className="img-styles" src={fileAttach} width="200px" height="200px" />
               </div>
             )}
           </Dialog>
@@ -144,4 +124,4 @@ const DialogDemo = ({ userObj }) => {
   );
 };
 
-export default DialogDemo;
+export default TweetDialog;
