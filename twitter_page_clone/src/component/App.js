@@ -2,7 +2,8 @@ import AppRouter from "./Router";
 import React, { useEffect, useState } from "react";
 import { authService } from "../myBase";
 import { updateCurrentUser } from "firebase/auth";
-
+import { dbService } from "../myBase";
+import { doc, setDoc, addDoc } from "firebase/firestore";
 function App() {
   const [init, setInit] = useState(false);
   const [userObj, setUserObj] = useState(null);

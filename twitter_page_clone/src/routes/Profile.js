@@ -1,15 +1,28 @@
 import React, { useEffect, useState, useRef } from "react";
-import { authService, dbService } from "../myBase";
+import { authService, dbService, storageService } from "../myBase";
 import { signOut, updateProfile } from "firebase/auth";
-import { collection, where, getDocs, query, orderBy, doc, updateDoc } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import {
+  collection,
+  where,
+  getDocs,
+  query,
+  orderBy,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { InputText } from "primereact/inputtext";
 import profile_user_icon from "../img/profile-user-icon.png";
 import { Button } from "primereact/button";
+import attach_icon from "../img/attachments-icon.png";
+import reset_icon from "../img/reset-icon.png";
 
 export default ({ refreshUser, userObj }) => {
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const [profile, setProfile] = useState(profile_user_icon);
   let fileInput = useRef();
+  let fileUrl = "";
   const onLogOutClick = () => {
     try {
       const ok = window.confirm("Are you sure?");
@@ -40,6 +53,7 @@ export default ({ refreshUser, userObj }) => {
       if (userObj.displayName !== newDisplayName) {
         await updateProfile(userObj, {
           displayName: newDisplayName,
+          photoURL: "",
         });
         refreshUser();
       }
@@ -55,9 +69,14 @@ export default ({ refreshUser, userObj }) => {
           });
         }
       });
+      if (profile != "") {
+        const fileRef = ref(storageService, `${userObj.uid}/${userObj.email}`);
+        const response = await uploadString(fileRef, profile, "data_url");
+        fileUrl = await getDownloadURL(response.ref);
+      }
     }
   };
-  const onSelect = (event) => {
+  const onSelect = async (event) => {
     console.log(event.target.files);
     const {
       target: { files },
@@ -69,10 +88,12 @@ export default ({ refreshUser, userObj }) => {
         currentTarget: { result },
       } = finishedEvent;
       setProfile(result);
+      console.log(result);
     };
     if (theFile) {
       reader.readAsDataURL(theFile);
     }
+    console.log(userObj);
   };
   const onClick = (event) => {
     setProfile(profile_user_icon);
@@ -88,10 +109,16 @@ export default ({ refreshUser, userObj }) => {
   }, []);
   return (
     <div className="profile-form">
-      <div>
-        <img src={profile} alt="user" width="100px" height="100px" />
-        <label className="profile-file" for="input-file">
-          file
+      <div className="profile-form__photo">
+        <img
+          className="profile-img"
+          src={profile}
+          alt="user"
+          width="100px"
+          height="100px"
+        />
+        <label className="profile-file" htmlFor="input-file">
+          <img src={attach_icon} />
         </label>
         <input
           type="file"
@@ -101,10 +128,15 @@ export default ({ refreshUser, userObj }) => {
           ref={fileInput}
           onChange={onSelect}
         />
-        <label for="clear-file" className="profile-clear-btn">
-          clear
+        <label htmlFor="clear-file" className="profile-clear-btn">
+          <img src={reset_icon} />
         </label>
-        <input type="button" id="clear-file" style={{ display: "none" }} onClick={onClick} />
+        <input
+          type="button"
+          id="clear-file"
+          style={{ display: "none" }}
+          onClick={onClick}
+        />
       </div>
 
       <form onSubmit={onSubmit}>
@@ -130,3 +162,9 @@ export default ({ refreshUser, userObj }) => {
     </div>
   );
 };
+{
+  /* <a href="https://www.flaticon.com/kr/free-icons/" title="붙이다 아이콘">붙이다 아이콘  제작자: Freepik - Flaticon</a> */
+}
+{
+  /* <a href="https://www.flaticon.com/kr/free-icons/-" title="- 아이콘">- 아이콘  제작자: Tanah Basah - Flaticon</a> */
+}

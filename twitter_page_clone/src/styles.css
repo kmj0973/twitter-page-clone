@@ -214,13 +214,21 @@ body {
   margin: 10px;
   padding: 10px 0px;
 }
+.profile-form__photo {
+  position: relative;
+}
+.profile-img {
+  border: solid 2px white;
+  border-radius: 50%;
+}
 .profile-file {
   position: absolute;
-  top: 8px;
+  bottom: 2px;
+  right: -5px;
 }
 .profile-clear-btn {
   position: absolute;
-  top: 90px;
+  right: -15px;
 }
 .logout-btn {
   margin: 10px;
