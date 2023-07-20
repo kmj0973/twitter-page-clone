@@ -1,15 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { authService, dbService } from "../myBase";
 import { signOut, updateProfile } from "firebase/auth";
-import {
-  collection,
-  where,
-  getDocs,
-  query,
-  orderBy,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, where, getDocs, query, orderBy, doc, updateDoc } from "firebase/firestore";
 import { InputText } from "primereact/inputtext";
 import profile_user_icon from "../img/profile-user-icon.png";
 import { Button } from "primereact/button";
@@ -18,9 +10,6 @@ export default ({ refreshUser, userObj }) => {
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const [profile, setProfile] = useState(profile_user_icon);
   let fileInput = useRef();
-  const btnClick = (e) => {
-    fileInput.current.click();
-  };
   const onLogOutClick = () => {
     try {
       const ok = window.confirm("Are you sure?");
@@ -70,7 +59,9 @@ export default ({ refreshUser, userObj }) => {
   };
   const onSelect = (event) => {
     console.log(event.target.files);
-    const { target: files } = event;
+    const {
+      target: { files },
+    } = event;
     const theFile = files[0];
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
@@ -82,6 +73,9 @@ export default ({ refreshUser, userObj }) => {
     if (theFile) {
       reader.readAsDataURL(theFile);
     }
+  };
+  const onClick = (event) => {
+    setProfile(profile_user_icon);
   };
   const onChange = (event) => {
     const {
@@ -95,8 +89,8 @@ export default ({ refreshUser, userObj }) => {
   return (
     <div className="profile-form">
       <div>
-        <img src={profile} alt="user" width="100vw" />
-        <label className="profile-file" for="input-file" onClick={btnClick}>
+        <img src={profile} alt="user" width="100px" height="100px" />
+        <label className="profile-file" for="input-file">
           file
         </label>
         <input
@@ -107,6 +101,10 @@ export default ({ refreshUser, userObj }) => {
           ref={fileInput}
           onChange={onSelect}
         />
+        <label for="clear-file" className="profile-clear-btn">
+          clear
+        </label>
+        <input type="button" id="clear-file" style={{ display: "none" }} onClick={onClick} />
       </div>
 
       <form onSubmit={onSubmit}>

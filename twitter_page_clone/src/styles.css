@@ -136,7 +136,7 @@ body {
 }
 .navigation {
   margin: 0;
-  border-bottom: solid 1px white;
+  border-bottom: solid 2px white;
 }
 .navigation ul {
   list-style: none;
@@ -216,7 +216,11 @@ body {
 }
 .profile-file {
   position: absolute;
-  top: 5px;
+  top: 8px;
+}
+.profile-clear-btn {
+  position: absolute;
+  top: 90px;
 }
 .logout-btn {
   margin: 10px;
