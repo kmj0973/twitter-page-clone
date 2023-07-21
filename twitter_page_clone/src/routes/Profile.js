@@ -2,7 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { authService, dbService, storageService } from "../myBase";
 import { signOut, updateProfile } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid";
-import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  deleteObject,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
 import {
   collection,
   where,
@@ -20,9 +26,13 @@ import reset_icon from "../img/reset-icon.png";
 
 export default ({ refreshUser, userObj }) => {
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
-  const [profile, setProfile] = useState(profile_user_icon);
+  const [profile, setProfile] = useState("");
   let fileInput = useRef();
   let fileUrl = "";
+  useEffect(() => {
+    if (userObj.photoURL != profile_user_icon) setProfile(userObj.photoURL);
+    else setProfile(profile_user_icon);
+  }, []);
   const onLogOutClick = () => {
     try {
       const ok = window.confirm("Are you sure?");
@@ -53,7 +63,6 @@ export default ({ refreshUser, userObj }) => {
       if (userObj.displayName !== newDisplayName) {
         await updateProfile(userObj, {
           displayName: newDisplayName,
-          photoURL: "",
         });
         refreshUser();
       }
@@ -61,23 +70,26 @@ export default ({ refreshUser, userObj }) => {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(async (docs) => {
         if (docs.data().displayName === newDisplayName)
-          // doc.data() is never undefined for query doc snapshots
-          console.log(docs.id, " => ", docs.data());
-        if (userObj.uid === docs.data().creatorId) {
-          await updateDoc(doc(dbService, "tweets", `${docs.id}`), {
-            displayName: newDisplayName,
-          });
-        }
+          if (userObj.uid === docs.data().creatorId) {
+            // doc.data() is never undefined for query doc snapshots
+            // console.log(docs.id, " => ", docs.data());
+            await updateDoc(doc(dbService, "tweets", `${docs.id}`), {
+              displayName: newDisplayName,
+            });
+          }
       });
-      if (profile != "") {
+      if (profile != profile_user_icon) {
         const fileRef = ref(storageService, `${userObj.uid}/${userObj.email}`);
         const response = await uploadString(fileRef, profile, "data_url");
         fileUrl = await getDownloadURL(response.ref);
+        await updateProfile(userObj, {
+          photoURL: fileUrl,
+        });
+        refreshUser();
       }
     }
   };
   const onSelect = async (event) => {
-    console.log(event.target.files);
     const {
       target: { files },
     } = event;
@@ -88,15 +100,29 @@ export default ({ refreshUser, userObj }) => {
         currentTarget: { result },
       } = finishedEvent;
       setProfile(result);
-      console.log(result);
     };
     if (theFile) {
       reader.readAsDataURL(theFile);
     }
     console.log(userObj);
   };
-  const onClick = (event) => {
+
+  const onClear = async (event) => {
     setProfile(profile_user_icon);
+    const ok = window.confirm("Are you sure you want to reset your profile?");
+    if (ok) {
+      await updateProfile(userObj, {
+        displayName: newDisplayName,
+        photoURL: profile_user_icon,
+      });
+      refreshUser();
+      // await deleteDoc(doc(dbService, "tweets", `${tweetObj.id}`));
+      if (userObj.photoURL) {
+        await deleteObject(
+          ref(getStorage(), `${userObj.uid}/${userObj.email}`)
+        );
+      }
+    }
   };
   const onChange = (event) => {
     const {
@@ -135,7 +161,7 @@ export default ({ refreshUser, userObj }) => {
           type="button"
           id="clear-file"
           style={{ display: "none" }}
-          onClick={onClick}
+          onClick={onClear}
         />
       </div>
 
@@ -168,3 +194,4 @@ export default ({ refreshUser, userObj }) => {
 {
   /* <a href="https://www.flaticon.com/kr/free-icons/-" title="- 아이콘">- 아이콘  제작자: Tanah Basah - Flaticon</a> */
 }
+//기본 이미지를 다시 세팅해야함
