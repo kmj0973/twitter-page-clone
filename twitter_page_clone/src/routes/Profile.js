@@ -25,12 +25,14 @@ import attach_icon from "../img/attachments-icon.png";
 import reset_icon from "../img/reset-icon.png";
 
 export default ({ refreshUser, userObj }) => {
-  const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
+  const [newDisplayName, setNewDisplayName] = useState(
+    userObj.displayName || ""
+  );
   const [profile, setProfile] = useState("");
   let fileInput = useRef();
   let fileUrl = "";
   useEffect(() => {
-    if (userObj.photoURL != profile_user_icon) setProfile(userObj.photoURL);
+    if (userObj.photoURL != null) setProfile(userObj.photoURL);
     else setProfile(profile_user_icon);
   }, []);
   const onLogOutClick = () => {
@@ -66,18 +68,6 @@ export default ({ refreshUser, userObj }) => {
         });
         refreshUser();
       }
-      const q = query(collection(dbService, "tweets"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(async (docs) => {
-        if (docs.data().displayName === newDisplayName)
-          if (userObj.uid === docs.data().creatorId) {
-            // doc.data() is never undefined for query doc snapshots
-            // console.log(docs.id, " => ", docs.data());
-            await updateDoc(doc(dbService, "tweets", `${docs.id}`), {
-              displayName: newDisplayName,
-            });
-          }
-      });
       if (profile != profile_user_icon) {
         const fileRef = ref(storageService, `${userObj.uid}/${userObj.email}`);
         const response = await uploadString(fileRef, profile, "data_url");
@@ -87,6 +77,19 @@ export default ({ refreshUser, userObj }) => {
         });
         refreshUser();
       }
+      const q = query(collection(dbService, "tweets"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (docs) => {
+        if (docs.data().displayName === newDisplayName)
+          if (userObj.uid === docs.data().creatorId) {
+            // doc.data() is never undefined for query doc snapshots
+            // console.log(docs.id, " => ", docs.data());
+            await updateDoc(doc(dbService, "tweets", `${docs.id}`), {
+              displayName: newDisplayName,
+              photoUrl: fileUrl,
+            });
+          }
+      });
     }
   };
   const onSelect = async (event) => {
@@ -122,6 +125,18 @@ export default ({ refreshUser, userObj }) => {
           ref(getStorage(), `${userObj.uid}/${userObj.email}`)
         );
       }
+      const q = query(collection(dbService, "tweets"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (docs) => {
+        if (docs.data().displayName === newDisplayName)
+          if (userObj.uid === docs.data().creatorId) {
+            // doc.data() is never undefined for query doc snapshots
+            // console.log(docs.id, " => ", docs.data());
+            await updateDoc(doc(dbService, "tweets", `${docs.id}`), {
+              photoUrl: profile_user_icon,
+            });
+          }
+      });
     }
   };
   const onChange = (event) => {

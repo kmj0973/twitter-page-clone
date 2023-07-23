@@ -47,6 +47,7 @@ const TweetDialog = ({ userObj }) => {
       creatorId: userObj.uid,
       displayName: userObj.displayName,
       fileUrl,
+      photoUrl: userObj.photoURL,
     };
     await addDoc(collection(dbService, "tweets"), tweetObj);
     setTweet("");
@@ -82,8 +83,19 @@ const TweetDialog = ({ userObj }) => {
   const renderFooter = () => {
     return (
       <div>
-        <Button type="submit" label="Post" icon="pi pi-check" autoFocus onClick={onSubmit} />
-        <Button label="Cancel" icon="pi pi-times" onClick={() => onHide()} className="p-button-text" />
+        <Button
+          type="submit"
+          label="Post"
+          icon="pi pi-check"
+          autoFocus
+          onClick={onSubmit}
+        />
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          onClick={() => onHide()}
+          className="p-button-text"
+        />
       </div>
     );
   };
@@ -100,7 +112,13 @@ const TweetDialog = ({ userObj }) => {
             footer={renderFooter()}
             onHide={() => onHide()}
           >
-            <InputTextarea autoResize value={tweet} onChange={onChange} placeholder="Write your mind!!" rows={5} />
+            <InputTextarea
+              autoResize
+              value={tweet}
+              onChange={onChange}
+              placeholder="Write your mind!!"
+              rows={5}
+            />
             <FileUpload
               onSelect={onSelect}
               onUpload={onClear}
@@ -114,7 +132,12 @@ const TweetDialog = ({ userObj }) => {
             />
             {fileAttach && (
               <div>
-                <img className="img-styles" src={fileAttach} width="200px" height="200px" />
+                <img
+                  className="img-styles"
+                  src={fileAttach}
+                  width="200px"
+                  height="200px"
+                />
               </div>
             )}
           </Dialog>

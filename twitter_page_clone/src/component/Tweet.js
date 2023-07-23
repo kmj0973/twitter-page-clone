@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import profile_user_icon from "../img/profile-user-icon.png";
 
 const Tweet = ({ tweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -151,7 +152,23 @@ const Tweet = ({ tweetObj, isOwner }) => {
         <>
           <div className="tweet">
             <div className="info-style">
-              <div>{tweetObj.displayName}</div>
+              <div className="tweet-info">
+                {tweetObj.photoUrl != profile_user_icon ? (
+                  <img
+                    className="tweet-profile-img"
+                    src={tweetObj.photoUrl}
+                    alt="user"
+                  />
+                ) : (
+                  <img
+                    className="tweet-profile-img"
+                    src={profile_user_icon}
+                    alt="user"
+                  />
+                )}
+
+                {tweetObj.displayName}
+              </div>
               {isOwner && (
                 <SpeedDial
                   model={items}
@@ -165,7 +182,7 @@ const Tweet = ({ tweetObj, isOwner }) => {
 
             {tweetObj.fileUrl && (
               <div className="tweet_img">
-                <img src={tweetObj.fileUrl} />
+                <img className="tweet_img_input" src={tweetObj.fileUrl} />
               </div>
             )}
           </div>
