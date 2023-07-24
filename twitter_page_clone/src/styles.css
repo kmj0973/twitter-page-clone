@@ -206,6 +206,14 @@ body {
   border: solid 1px;
   border-radius: 10px;
 }
+.tweet-footer {
+  font-size: 10px;
+}
+.tweet-footer__heart {
+  display: flex;
+  align-items: center;
+  margin: 1px 5px;
+}
 .profile-form {
   display: flex;
   position: relative;
@@ -338,4 +346,11 @@ body {
   display: flex;
   padding: 4px 0px;
   justify-content: space-between;
+}
+.profile-submit-btn {
+  position: absolute;
+  width: 50px;
+  border-radius: 50%;
+  right: -70px;
+  bottom: 0px;
 }

@@ -5,14 +5,7 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import Tweet from "../component/Tweet";
 import TweetDialog from "../component/TweetDialog";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { collection, addDoc, getDocs, onSnapshot, query, orderBy } from "firebase/firestore";
 import { onAuthStateChanged, updateProfile } from "firebase/auth";
 
 const Home = ({ userObj }) => {
@@ -21,10 +14,7 @@ const Home = ({ userObj }) => {
   const [fileAttach, setFileAttach] = useState("");
   const fileInput = useRef();
   useEffect(() => {
-    const q = query(
-      collection(dbService, "tweets"),
-      orderBy("createdAt", "desc")
-    );
+    const q = query(collection(dbService, "tweets"), orderBy("createdAt", "desc"));
     onSnapshot(q, (snapshot) => {
       const TweetArr = snapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
@@ -38,65 +28,12 @@ const Home = ({ userObj }) => {
     //   }
     // });
   }, []);
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    let fileUrl = "";
-    if (tweet === "") return window.confirm("Write your mind");
-    if (fileAttach != "") {
-      const fileRef = ref(storageService, `${userObj.uid}/${uuidv4()}`);
-      const response = await uploadString(fileRef, fileAttach, "data_url");
-      fileUrl = await getDownloadURL(response.ref);
-    }
-    const tweetObj = {
-      text: tweet,
-      createdAt: Date.now(),
-      creatorId: userObj.uid,
-      displayName: userObj.displayName,
-      fileUrl,
-    };
-    await addDoc(collection(dbService, "tweets"), tweetObj);
-    setTweet("");
-    setFileAttach("");
-    fileInput.current.value = null;
-  };
-  const onChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setTweet(value);
-  };
-  const onFileChange = (event) => {
-    console.log(event);
-    const {
-      target: { files },
-    } = event;
-    const theFile = files[0];
-    const reader = new FileReader();
-    reader.onloadend = (finishedEvent) => {
-      const {
-        currentTarget: { result },
-      } = finishedEvent;
-      setFileAttach(result);
-    };
-    if (theFile) {
-      reader.readAsDataURL(theFile);
-    }
-  };
-  const onClear = () => {
-    fileInput.current.value = null;
-    setFileAttach("");
-  };
   return (
     <div className="main-home">
       <TweetDialog userObj={userObj} />
       <div className="tweet-form">
         {tweets.map((tweet) => (
-          <Tweet
-            key={tweet.id}
-            userObj={userObj}
-            tweetObj={tweet}
-            isOwner={tweet.creatorId === userObj.uid}
-          />
+          <Tweet key={tweet.id} userObj={userObj} tweetObj={tweet} isOwner={tweet.creatorId === userObj.uid} />
         ))}
       </div>
     </div>
