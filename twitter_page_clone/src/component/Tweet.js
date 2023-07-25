@@ -1,4 +1,4 @@
-import { doc, deleteDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, query, collection, getDocs } from "firebase/firestore";
 import { getStorage, ref, deleteObject, uploadString, getDownloadURL } from "firebase/storage";
 import { SpeedDial } from "primereact/speeddial";
 import React, { useEffect, useRef, useState } from "react";
@@ -11,6 +11,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import profile_user_icon from "../img/profile-user-icon.png";
+import CommentDialog from "../component/CommentDialog";
 
 const Tweet = ({ userObj, tweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -21,7 +22,13 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
   const [hearts, setHearts] = useState(tweetObj.hearts);
   const [comments, setComments] = useState(1);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    tweetObj.heartArray.forEach((uid) => {
+      if (uid == userObj.uid) {
+        setEditingHearts(true);
+      }
+    });
+  }, []);
   const onSelect = (event) => {
     console.log(event.files);
     const { files: files } = event;
@@ -55,10 +62,12 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
       fileUrl = await getDownloadURL(response.ref);
 
       await updateDoc(doc(dbService, "tweets", `${tweetObj.id}`), {
-        text: newTweet,
         fileUrl: fileUrl,
       });
     }
+    await updateDoc(doc(dbService, "tweets", `${tweetObj.id}`), {
+      text: newTweet,
+    });
     setEditing(false);
   };
   const onChange = (event) => {
@@ -80,6 +89,9 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
         heartArray: arrayRemove(userObj.uid),
       });
     }
+  };
+  const onClickComment = (event) => {
+    console.log(event);
   };
   const items = [
     {
@@ -184,7 +196,7 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
             )}
             <div className="tweet-footer">
               <div className="tweet-footer__heart">
-                {tweetObj.hearts >= 1 ? (
+                {editingHearts ? (
                   <i className="pi pi-heart-fill" onClick={onHeartClick}></i>
                 ) : (
                   <i className="pi pi-heart" onClick={onHeartClick}></i>
@@ -197,6 +209,9 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
               </div>
               <div style={{ marginLeft: "5px" }}>댓글 {comments}개</div>
               <div style={{ marginLeft: "5px" }}>댓글을 입력하세요...</div>
+            </div>
+            <div className="comment-form" onClick={onClickComment}>
+              <CommentDialog />
             </div>
           </div>
         </>

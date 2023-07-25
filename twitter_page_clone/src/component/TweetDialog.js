@@ -97,6 +97,8 @@ const TweetDialog = ({ userObj }) => {
         <Button icon="pi pi-pencil" label="Tweet" onClick={() => onClick()} />
         <form>
           <Dialog
+            draggable={false}
+            dismissableMask={true}
             header="Tweet"
             visible={display}
             style={{ width: "50vw" }}
