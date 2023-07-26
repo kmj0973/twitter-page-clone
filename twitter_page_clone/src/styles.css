@@ -217,11 +217,22 @@ body {
 .comment-form {
   transition: all 0.5s;
 }
-.dialog-body {
+.comment-dialog-body {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.comment {
+  border: solid 1px rgb(194, 193, 193);
+  border-left: none;
+  border-right: none;
+  padding: 10px 2px;
+}
+.comments-body {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 /* .comment-form:active {
   transform: translateY(10);

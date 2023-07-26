@@ -1,5 +1,20 @@
-import { doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, query, collection, getDocs } from "firebase/firestore";
-import { getStorage, ref, deleteObject, uploadString, getDownloadURL } from "firebase/storage";
+import {
+  doc,
+  deleteDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  query,
+  collection,
+  getDocs,
+} from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  deleteObject,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
 import { SpeedDial } from "primereact/speeddial";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "primereact/button";
@@ -19,7 +34,6 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
   const [fileAttach, setFileAttach] = useState(tweetObj.fileUrl);
   const fileInput = useRef();
   const [editingHearts, setEditingHearts] = useState(false);
-  const [hearts, setHearts] = useState(tweetObj.hearts);
   const [comments, setComments] = useState(1);
 
   useEffect(() => {
@@ -91,14 +105,16 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
     }
   };
   const onClickComment = (event) => {
-    console.log(event);
+    //console.log(event);
   };
   const items = [
     {
       label: "Delete",
       icon: "pi pi-trash",
       command: async (event) => {
-        const ok = window.confirm("Are you sure you want to delete this tweet?");
+        const ok = window.confirm(
+          "Are you sure you want to delete this tweet?"
+        );
         console.log(ok);
         if (ok) {
           await deleteDoc(doc(dbService, "tweets", `${tweetObj.id}`));
@@ -142,7 +158,12 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
               />
               {fileAttach && (
                 <div className="img-div">
-                  <img className="img-styles" src={fileAttach} width="100px" height="100px" />
+                  <img
+                    className="img-styles"
+                    src={fileAttach}
+                    width="100px"
+                    height="100px"
+                  />
                 </div>
               )}
               <div className="edit-btn">
@@ -171,12 +192,22 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
             <div className="info-style">
               <div className="tweet-info">
                 {tweetObj.photoUrl != null ? (
-                  <img className="tweet-profile-img" src={tweetObj.photoUrl} alt="user" />
+                  <img
+                    className="tweet-profile-img"
+                    src={tweetObj.photoUrl}
+                    alt="user"
+                  />
                 ) : (
-                  <img className="tweet-profile-img" src={profile_user_icon} alt="user" />
+                  <img
+                    className="tweet-profile-img"
+                    src={profile_user_icon}
+                    alt="user"
+                  />
                 )}
 
-                {tweetObj.displayName != null ? tweetObj.displayName : "undefined"}
+                {tweetObj.displayName != null
+                  ? tweetObj.displayName
+                  : "undefined"}
               </div>
               {isOwner && (
                 <SpeedDial
@@ -202,7 +233,9 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
                   <i className="pi pi-heart" onClick={onHeartClick}></i>
                 )}
                 {tweetObj.hearts >= 1 ? (
-                  <div style={{ marginLeft: "5px" }}>{tweetObj.hearts}명이 이 글을 좋아합니다.</div>
+                  <div style={{ marginLeft: "5px" }}>
+                    {tweetObj.hearts}명이 이 글을 좋아합니다.
+                  </div>
                 ) : (
                   ""
                 )}
@@ -211,7 +244,7 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
               <div style={{ marginLeft: "5px" }}>댓글을 입력하세요...</div>
             </div>
             <div className="comment-form" onClick={onClickComment}>
-              <CommentDialog />
+              <CommentDialog userObj={userObj} tweetObj={tweetObj} />
             </div>
           </div>
         </>
