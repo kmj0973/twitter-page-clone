@@ -224,6 +224,8 @@ body {
   justify-content: space-between;
 }
 .comment {
+  display: flex;
+  align-items: center;
   border: solid 1px rgb(194, 193, 193);
   border-left: none;
   border-right: none;
