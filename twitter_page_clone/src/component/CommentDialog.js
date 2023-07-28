@@ -27,7 +27,7 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
     if (comment != "") {
       setComments([...comments, comment]);
       await updateDoc(doc(dbService, "tweets", `${tweetObj.id}`), {
-        commentArray: [...comment],
+        commentArray: [...tweetObj.commentArray, comment],
       });
       setComment("");
     }
