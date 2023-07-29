@@ -2,7 +2,17 @@ import React, { useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
-import { doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, query, collection, getDocs } from "firebase/firestore";
+import {
+  doc,
+  deleteDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  query,
+  collection,
+  getDocs,
+  serverTimestamp,
+} from "firebase/firestore";
 import { dbService, storageService } from "../myBase";
 const CommnetDialog = ({ userObj, tweetObj }) => {
   const [visi, setVisi] = useState(false);
@@ -13,11 +23,13 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
     userUid: userObj.uid,
     userUrl: userObj.photoURL,
     userName: userObj.displayName,
+    timestamp: new Date(),
   });
   const onClick = () => {
     setVisi((e) => !e);
   };
   const onHide = () => {
+    console.log(tweetObj.commentArray);
     setVisi((e) => !e);
   };
   const onAddClick = async () => {
@@ -26,7 +38,13 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
       await updateDoc(doc(dbService, "tweets", `${tweetObj.id}`), {
         commentArray: [
           ...tweetObj.commentArray,
-          { comment: commenting.comment, userUid: commenting.userUid, userUrl: commenting.userUrl },
+          {
+            comment: commenting.comment,
+            userUid: commenting.userUid,
+            userUrl: commenting.userUrl,
+            userName: commenting.userName,
+            timestamp: commenting.timestamp,
+          },
         ],
       });
       setCommenting((cmt) => {
@@ -43,7 +61,7 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
     setCommenting((cmt) => {
       return { ...cmt, comment: value };
     });
-    console.log(commenting);
+    console.log(tweetObj.commentArray[0].timestamp);
   };
   const footer = (
     <div>
@@ -54,7 +72,9 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
 
   return (
     <>
-      <div onClick={onClick}>댓글</div>
+      <div onClick={onClick} style={{ fontSize: "15px" }}>
+        댓글을 입력하세요...
+      </div>
 
       <Dialog
         header="Comments"
@@ -73,8 +93,12 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
               tweetObj.commentArray.map((c, idx) => {
                 return (
                   <div className="comment" key={idx++}>
-                    <img className="tweet-profile-img" src={c.userUrl} />
-                    {c.comment}
+                    <div className="comment-info">
+                      <img className="tweet-profile-img" src={c.userUrl} />
+                      <div className="comment-info__name">{c.userName}</div>
+                      <div></div>
+                    </div>
+                    <div className="comment-value">{c.comment}</div>
                   </div>
                 );
               })
@@ -84,7 +108,7 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
           </div>
           <div className="dialog-body__add-comment">
             <div>댓글 추가</div>
-            <InputTextarea autoResize value={comment} onChange={onChange} placeholder="Write your mind!!" rows={5} />
+            <InputTextarea autoResize value={comment} onChange={onChange} placeholder="Enter comments" rows={3} />
           </div>
         </div>
       </Dialog>

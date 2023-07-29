@@ -1,20 +1,5 @@
-import {
-  doc,
-  deleteDoc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  query,
-  collection,
-  getDocs,
-} from "firebase/firestore";
-import {
-  getStorage,
-  ref,
-  deleteObject,
-  uploadString,
-  getDownloadURL,
-} from "firebase/storage";
+import { doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, query, collection, getDocs } from "firebase/firestore";
+import { getStorage, ref, deleteObject, uploadString, getDownloadURL } from "firebase/storage";
 import { SpeedDial } from "primereact/speeddial";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "primereact/button";
@@ -112,9 +97,7 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
       label: "Delete",
       icon: "pi pi-trash",
       command: async (event) => {
-        const ok = window.confirm(
-          "Are you sure you want to delete this tweet?"
-        );
+        const ok = window.confirm("Are you sure you want to delete this tweet?");
         console.log(ok);
         if (ok) {
           await deleteDoc(doc(dbService, "tweets", `${tweetObj.id}`));
@@ -158,12 +141,7 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
               />
               {fileAttach && (
                 <div className="img-div">
-                  <img
-                    className="img-styles"
-                    src={fileAttach}
-                    width="100px"
-                    height="100px"
-                  />
+                  <img className="img-styles" src={fileAttach} width="100px" height="100px" />
                 </div>
               )}
               <div className="edit-btn">
@@ -192,33 +170,23 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
             <div className="info-style">
               <div className="tweet-info">
                 {tweetObj.photoUrl != null ? (
-                  <img
-                    className="tweet-profile-img"
-                    src={tweetObj.photoUrl}
-                    alt="user"
-                  />
+                  <img className="tweet-profile-img" src={tweetObj.photoUrl} alt="user" />
                 ) : (
-                  <img
-                    className="tweet-profile-img"
-                    src={profile_user_icon}
-                    alt="user"
-                  />
+                  <img className="tweet-profile-img" src={profile_user_icon} alt="user" />
                 )}
 
-                {tweetObj.displayName != null
-                  ? tweetObj.displayName
-                  : "undefined"}
+                {tweetObj.displayName != null ? tweetObj.displayName : "undefined"}
               </div>
               {isOwner && (
                 <SpeedDial
                   model={items}
                   showIcon="pi pi-cog"
-                  direction="left"
+                  direction="down"
                   //   style={{ left: "calc(50% - 2rem)", top: 0 }}
                 />
               )}
             </div>
-            <h3>{tweetObj.text} </h3>
+            <h3 style={{ marginLeft: "5px" }}>{tweetObj.text} </h3>
 
             {tweetObj.fileUrl && (
               <div className="tweet_img">
@@ -233,18 +201,15 @@ const Tweet = ({ userObj, tweetObj, isOwner }) => {
                   <i className="pi pi-heart" onClick={onHeartClick}></i>
                 )}
                 {tweetObj.hearts >= 1 ? (
-                  <div style={{ marginLeft: "5px" }}>
-                    {tweetObj.hearts}명이 이 글을 좋아합니다.
-                  </div>
+                  <div style={{ marginLeft: "5px" }}>{tweetObj.hearts}명이 이 글을 좋아합니다.</div>
                 ) : (
                   ""
                 )}
               </div>
-              <div style={{ marginLeft: "5px" }}>댓글 {comments}개</div>
-              <div style={{ marginLeft: "5px" }}>댓글을 입력하세요...</div>
-            </div>
-            <div className="comment-form" onClick={onClickComment}>
-              <CommentDialog userObj={userObj} tweetObj={tweetObj} />
+              <div style={{ marginLeft: "5px", fontSize: "12px" }}>댓글 {tweetObj.commentArray.length}개</div>
+              <div className="comment-form" onClick={onClickComment} style={{ marginLeft: "5px" }}>
+                <CommentDialog userObj={userObj} tweetObj={tweetObj} />
+              </div>
             </div>
           </div>
         </>
