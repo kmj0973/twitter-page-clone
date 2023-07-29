@@ -23,13 +23,18 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
     userUid: userObj.uid,
     userUrl: userObj.photoURL,
     userName: userObj.displayName,
-    timestamp: new Date(),
+    timestamps: {
+      year: new Date().getFullYear(),
+      mon: new Date().getMonth() + 1,
+      date: new Date().getDate(),
+      hour: new Date().getHours(),
+      min: new Date().getMinutes(),
+    },
   });
   const onClick = () => {
     setVisi((e) => !e);
   };
   const onHide = () => {
-    console.log(tweetObj.commentArray);
     setVisi((e) => !e);
   };
   const onAddClick = async () => {
@@ -43,7 +48,7 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
             userUid: commenting.userUid,
             userUrl: commenting.userUrl,
             userName: commenting.userName,
-            timestamp: commenting.timestamp,
+            timestamp: commenting.timestamps,
           },
         ],
       });
@@ -54,6 +59,19 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
     }
   };
   const onChange = (event) => {
+    setCommenting({
+      comment: comment,
+      userUid: userObj.uid,
+      userUrl: userObj.photoURL,
+      userName: userObj.displayName,
+      timestamps: {
+        year: new Date().getFullYear(),
+        mon: new Date().getMonth() + 1,
+        date: new Date().getDate(),
+        hour: new Date().getHours(),
+        min: new Date().getMinutes(),
+      },
+    });
     const {
       target: { value },
     } = event;
@@ -61,7 +79,6 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
     setCommenting((cmt) => {
       return { ...cmt, comment: value };
     });
-    console.log(tweetObj.commentArray[0].timestamp);
   };
   const footer = (
     <div>
@@ -91,12 +108,18 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
           <div className="comments-body">
             {tweetObj.commentArray ? (
               tweetObj.commentArray.map((c, idx) => {
+                let time = c.timestamp;
+                let timeString = `${time.year}/${time.mon}/${time.date} ${
+                  time.hour < 10 ? "0" + time.hour : time.hour
+                }:${time.min < 10 ? "0" + time.min : time.min}`;
                 return (
                   <div className="comment" key={idx++}>
-                    <div className="comment-info">
-                      <img className="tweet-profile-img" src={c.userUrl} />
-                      <div className="comment-info__name">{c.userName}</div>
-                      <div></div>
+                    <div className="comment-info-main">
+                      <div className="comment-info">
+                        <img className="tweet-profile-img" src={c.userUrl} />
+                        <div className="comment-info__name">{c.userName}</div>
+                      </div>
+                      <div>{timeString}</div>
                     </div>
                     <div className="comment-value">{c.comment}</div>
                   </div>
@@ -108,7 +131,13 @@ const CommnetDialog = ({ userObj, tweetObj }) => {
           </div>
           <div className="dialog-body__add-comment">
             <div>댓글 추가</div>
-            <InputTextarea autoResize value={comment} onChange={onChange} placeholder="Enter comments" rows={3} />
+            <InputTextarea
+              autoResize
+              value={comment}
+              onChange={onChange}
+              placeholder="Enter comments"
+              rows={3}
+            />
           </div>
         </div>
       </Dialog>

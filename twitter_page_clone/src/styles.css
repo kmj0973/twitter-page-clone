@@ -1,9 +1,15 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+.notosanskr * {
+  font-family: "Noto Sans KR", sans-serif;
+}
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   background-color: rgb(24, 23, 23);
   color: rgb(255, 255, 255);
+  font-family: "Noto Sans KR", sans-serif;
 }
 #root {
   width: 60vw;
@@ -235,6 +241,11 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+}
+.comment-info-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .comment-info__name {
   font-size: 15px;
